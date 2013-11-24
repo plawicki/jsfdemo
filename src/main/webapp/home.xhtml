@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	template="/templates/mojaTemplatka.xhtml">
+
+	<ui:define name="content">
+
+		<div class="post">
+			<h2 class="title">#{msg.firstPostTitle}</h2>
+			<p class="byline">
+				<small>#{msg.firstPostTime} by #{msg.byWho}</small>
+			</p>
+			<div class="entry">
+				<h:form id="gameform">
+				
+					<f:event type="postValidate" listener="#{gameBean.validatePinYop}" />
+					<h:panelGrid columns="2">
+						
+						<h:outputText value="#{msg.gamePIN}" />
+						<h:inputText value="gameBean.game.PIN" validator="#{gameBean.uniquePin}" required="#{true}">
+							<f:validator validatorId="pinValidator" />
+						</h:inputText>
+						
+
+						<h:outputText value="#{msg.gameTitle}" />
+						<h:inputText id="name" value="#{gameBean.game.title}" required="#{true}" />
+
+						<h:outputText value="#{msg.gameYop}" />
+						
+						<h:inputText id="yop" value="#{gameBean.game.yop}" >
+							 <f:convertDateTime type="date" pattern="dd.MM.yyyy" />
+						</h:inputText>
+
+						<h:outputText value="#{msg.gamePrice}" />
+						<h:inputText id="price" value="#{gameBean.game.price}" >
+							<f:validateDoubleRange minimum="5" maximum="260.5" />
+						</h:inputText>
+
+						<h:outputText value="#{msg.gameRequireAdult}" />
+						<h:selectBooleanCheckbox id="requireAdult"
+							value="#{gameBean.game.requireAdult}" />
+					</h:panelGrid>
+
+					<h:commandButton value="#{msg.gameOkButton}"
+						action="#{gameBean.addGame}" />
+
+					<h:panelGrid>
+						<h:messages showDetail="#{true}" showSummary="#{false}" />
+					</h:panelGrid>
+				</h:form>
+
+<!-- 				<p>#{msg.firstPostContent}</p> -->
+				
+				<h:form>
+					<h:dataTable value="#{gameBean.allGames}" var="item">
+					
+					<h:column>
+						<f:facet name="header">${msg.listaPIN}</f:facet>
+						#{item.PIN}
+					</h:column>
+						<f:facet name="header">${msg.listaTitle}</f:facet>
+						#{item.title}
+					<h:column>
+						<f:facet name="header">${msg.listaYop}</f:facet>
+						#{item.yop}
+					</h:column>
+						<f:facet name="header">${msg.listaPrice}</f:facet>
+						#{item.price}
+					<h:column>
+						<f:facet name="header">${msg.listaRequireAdult}</f:facet>
+						#{item.title}
+					</h:column>
+					
+					</h:dataTable>
+				
+				</h:form>
+
+			</div>
+
+		</div>
+
+	</ui:define>
+
+</ui:composition>
