@@ -21,7 +21,6 @@ public class GameManager {
 		newGame.setYop(game.getYop());
 		newGame.setRequireAdult(game.isRequireAdult());
 
-
 		db.add(newGame);
 	}
 

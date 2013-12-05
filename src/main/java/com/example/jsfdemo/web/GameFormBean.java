@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -17,8 +16,8 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import com.example.jsfdemo.domain.Game;
 
+import com.example.jsfdemo.domain.Game;
 import com.example.jsfdemo.service.GameManager;
 
 
@@ -35,8 +34,7 @@ public class GameFormBean implements Serializable
 
 	@Inject
 	private GameManager gm;
-
-
+	
 	public Game getGame() {
 		return game;
 	}
@@ -54,7 +52,7 @@ public class GameFormBean implements Serializable
 	
 	public String addGame() {
 		gm.addGame(game);
-		return "showGames";
+		return "list";
 		//return null;
 	}
 
@@ -64,21 +62,21 @@ public class GameFormBean implements Serializable
 		return null;
 	}
 	
-	public String findGamePIN()
+	public String getGamePIN()
 	{
 		Game g = games.getRowData();
 		gm.getGamePIN(g);
 		return null;
 	}
 	
-	public String findGamesAdult()
+	public String getGamesAdult()
 	{
 		
 		gm.getGamesByAdult();
 		return null;
 	}
 	
-	public String findGamesNotAdult()
+	public String getGamesNotAdult()
 	{
 		gm.getGamesByNotAdult();
 		return null;
@@ -115,7 +113,7 @@ public class GameFormBean implements Serializable
 
 	// xxxx-year
 	public void validatePinYop(ComponentSystemEvent event) {
-
+		
 		UIForm form = (UIForm) event.getComponent();
 		UIInput PIN = (UIInput) form.findComponent("PIN");
 		UIInput yop = (UIInput) form.findComponent("yop");
@@ -123,16 +121,16 @@ public class GameFormBean implements Serializable
 		if (PIN.getValue() != null && yop.getValue() != null
 		 && PIN.getValue().toString().length() >= 4) 
 		
-		{
-			String fourDigitsOfPin = PIN.getValue().toString().substring(4, 4);
+		{															//12051992
+			String fourDigitsOfPin = PIN.getValue().toString().substring(4, 8);
 			
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(((Date) yop.getValue()));
 
-			String lastDigitsOfYop = ((Integer) cal.get(Calendar.YEAR))
-					.toString().substring(4);
+			String DigitsOfYear = ((Integer) cal.get(Calendar.YEAR))
+					.toString();
 
-			if (!fourDigitsOfPin.equals(lastDigitsOfYop)) {
+			if (!fourDigitsOfPin.equals(DigitsOfYear)) {
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(form.getClientId(), new FacesMessage(
 						"PIN doesn't match date of publication"));

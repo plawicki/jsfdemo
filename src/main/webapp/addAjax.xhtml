@@ -3,9 +3,10 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
 	template="/templates/default.xhtml">
 	<ui:define name="content">
-
+	<rich:panel>
 		<h:form id="personForm">
 			<h:panelGrid columns="2">
 
@@ -40,6 +41,18 @@
 				</h:inputText>
 
 			</h:panelGrid>
+			
+			
+        <f:facet name="header">
+            <h:outputText value="Person Info"></h:outputText>
+        </f:facet>
+        <h:panelGrid columns="2">
+            <h:outputText value="Name: " />
+            <rich:inplaceInput defaultLabel="click to enter your name" />
+            <h:outputText value="Email:" />
+            <rich:inplaceInput defaultLabel="click to enter your email" />
+        </h:panelGrid>
+    
 
 			<h:commandButton value="#{msg.personFormOKButton}"
 				action="#{personBean.addPerson}" />

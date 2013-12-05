@@ -3,6 +3,7 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
 	template="/templates/mojaTemplatka.xhtml">
 
 	<ui:define name="content">
@@ -15,67 +16,61 @@
 			<div class="entry">
 				<h:form id="gameform">
 				
-					<f:event type="postValidate" listener="#{gameBean.validatePinYop}" />
+					<f:event type="postValidate" listener="#{gameBean.validatePinYop}" >
+						
+					</f:event>
+					
 					<h:panelGrid columns="2">
 						
 						<h:outputText value="#{msg.gamePIN}" />
-						<h:inputText value="gameBean.game.PIN" validator="#{gameBean.uniquePin}" required="#{true}">
-							<f:validator validatorId="pinValidator" />
+
+						
+						<h:inputText id="PIN" value="#{gameBean.game.PIN}" validator="#{gameBean.uniquePin}" required="#{true}">
+							
+							
+							
+							<f:validateRegex
+                        		pattern="^[a-zA-Z]{4}[0-9]{4}$"></f:validateRegex>
+                    		<rich:validator />
 						</h:inputText>
 						
-
+						<rich:message for="PIN" />
+						
+						<br />
+				 		
+						
 						<h:outputText value="#{msg.gameTitle}" />
-						<h:inputText id="name" value="#{gameBean.game.title}" required="#{true}" />
+						<rich:inplaceInput id="name" value="#{gameBean.game.title}" defaultLabel="click to enter title" required="#{true}">
+							<f:validator validatorId="titleValidator" />
+							<f:ajax execute="@this" render="messages" />
+						</rich:inplaceInput>
 
 						<h:outputText value="#{msg.gameYop}" />
+						<rich:calendar value="#{gameBean.game.yop}" id="yop" locale="PL"
+                  		  	popup="true" datePattern="dd.MM.yyyy"
+                    		showApplyButton="false" cellWidth="24px" cellHeight="22px" style="width:200px"
+                    		disabled="false">
+                		</rich:calendar>
 						
-						<h:inputText id="yop" value="#{gameBean.game.yop}" >
-							 <f:convertDateTime type="date" pattern="dd.MM.yyyy" />
-						</h:inputText>
-
 						<h:outputText value="#{msg.gamePrice}" />
-						<h:inputText id="price" value="#{gameBean.game.price}" >
+						<rich:inputNumberSlider value="#{gameBean.game.price}" width="255" maxValue="260" step="1" showArrows="true" showTooltip="false" >
 							<f:validateDoubleRange minimum="5" maximum="260.5" />
-						</h:inputText>
-
+						</rich:inputNumberSlider>
+							
 						<h:outputText value="#{msg.gameRequireAdult}" />
 						<h:selectBooleanCheckbox id="requireAdult"
 							value="#{gameBean.game.requireAdult}" />
+					</h:panelGrid>
+					
+					<h:panelGrid>
+							<h:messages id="messages" showDetail="#{true}"
+								showSummary="#{false}" />
 					</h:panelGrid>
 
 					<h:commandButton value="#{msg.gameOkButton}"
 						action="#{gameBean.addGame}" />
 
-					<h:panelGrid>
-						<h:messages showDetail="#{true}" showSummary="#{false}" />
-					</h:panelGrid>
-				</h:form>
-
-<!-- 				<p>#{msg.firstPostContent}</p> -->
-				
-				<h:form>
-					<h:dataTable value="#{gameBean.allGames}" var="item">
-					
-					<h:column>
-						<f:facet name="header">${msg.listaPIN}</f:facet>
-						#{item.PIN}
-					</h:column>
-						<f:facet name="header">${msg.listaTitle}</f:facet>
-						#{item.title}
-					<h:column>
-						<f:facet name="header">${msg.listaYop}</f:facet>
-						#{item.yop}
-					</h:column>
-						<f:facet name="header">${msg.listaPrice}</f:facet>
-						#{item.price}
-					<h:column>
-						<f:facet name="header">${msg.listaRequireAdult}</f:facet>
-						#{item.title}
-					</h:column>
-					
-					</h:dataTable>
-				
-				</h:form>
+				</h:form>		
 
 			</div>
 

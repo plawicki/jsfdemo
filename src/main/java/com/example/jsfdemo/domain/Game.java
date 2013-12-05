@@ -1,6 +1,7 @@
 package com.example.jsfdemo.domain;
 
 import java.util.Date;
+import java.util.List;
 
 public class Game {
 	
@@ -10,7 +11,9 @@ public class Game {
 	double price;
 	boolean requireAdult;
 	
-	public Game() { }
+	public Game() {
+
+	}
 
 	public Game(String PIN, String title, Date yop, double price, boolean requireAdult) {
 		super();
@@ -25,8 +28,8 @@ public class Game {
 		return PIN;
 	}
 
-	public void setPIN(String pIN) {
-		PIN = pIN;
+	public void setPIN(String PIN) {
+		this.PIN = PIN;
 	}
 
 	public String getTitle() {
